@@ -9,6 +9,7 @@ var title = process.argv[3];
 // console.log(inputCommand);
 // console.log(title);
 
+var fs = require("fs");
 var keys = require("./keys.js");
 var request = require('request');
 var spotify = require('spotify');
@@ -35,11 +36,17 @@ client.get('statuses/user_timeline', params, function(error, tweets, response) {
 
 } else if(inputCommand === "movie-this") {
 
+    if (!title) {
+                   title = "Mr. Nobody";
+                   console.log(title);
+               }
+
     request("http://www.omdbapi.com/?t=" + title + "&y=&plot=short&r=json", function(error, response, body) {
 
   // If there were no errors and the response code was 200 (i.e. the request was successful)...
   if (!error && response.statusCode === 200) {
 
+// Clean up all these console logs - change all JSON data to a variable and use one console log (\r \n)
     console.log("Title: " +JSON.parse(body).Title);
     console.log("Year: " +JSON.parse(body).Year);
     console.log("Rating: " +JSON.parse(body).imdbRating);
@@ -74,7 +81,20 @@ client.get('statuses/user_timeline', params, function(error, tweets, response) {
            }
        });
 
+} else if (inputCommand === "do-what-it-says") {
+
+    fs.readFile("random.txt", "utf8", function(error, data) {
+ // We will then print the contents of data
+    console.log(data);
+
+    var dataArr = data.split(",");
+    console.log(dataArr);
+
+});
+
 }
+
+
 
 
 
